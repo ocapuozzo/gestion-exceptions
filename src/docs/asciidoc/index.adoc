@@ -1,7 +1,7 @@
-= Template titre
-auteur 
+= Gestion des exceptions
+auteur
 v1.0, 2020-04-13: Version asciidoc
-:description: template description
+:description: Les principes de bases de la gestion des exceptions
 :icons: font
 :listing-caption: Listing
 :toc-title: Table des matieres
@@ -34,8 +34,10 @@ ifndef::backend-pdf[]
 image:cogitas.png[title="cogitas", 200]
 endif::[]
 
-Texte introductif
+Le mécanisme des exceptions fait écho au concept de _design by contrat_ de Bertrand Meyer.
+
+_La programmation par contrat (en anglais, design by contract ou DBC) est un paradigme de programmation dans lequel le déroulement des traitements est régi par des règles. Ces règles, appelées des assertions, forment un contrat qui précise les responsabilités entre le client et le fournisseur d'un morceau de code logiciel. C'est une méthode de programmation semi-formelle dont le but principal est de réduire le nombre de bugs dans les programmes._ (https://fr.wikipedia.org/wiki/Programmation_par_contrat)
 
 // <<<
-include::_doc1.adoc[leveloffset=+1]
+include::_intro-ge.adoc[leveloffset=+1]
 

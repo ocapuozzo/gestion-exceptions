@@ -2,20 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.6.1">
-<meta name="description" content="template description">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="description" content="Les principes de bases de la gestion des exceptions">
 <meta name="author" content="auteur">
-<title>Template titre</title>
+<title>Gestion des exceptions</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <link rel="stylesheet" href="./asciidoctor.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-<link rel="stylesheet" href="./coderay-asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Template titre</h1>
+<h1>Gestion des exceptions</h1>
 <div class="details">
 <span id="author" class="author">auteur</span><br>
 <span id="revnumber">version 1.0,</span>
@@ -26,9 +25,32 @@
 <div id="toctitle">Table des matieres</div>
 <ul class="sectlevel1">
 <li><a href="#présentation">Présentation</a></li>
-<li><a href="#titre-doc-1">Titre doc 1</a>
-<ul class="sectlevel2">
-<li><a href="#introduction">Introduction</a></li>
+<li><a href="#introdution">Introdution</a>
+<ul class="sectlevel3">
+<li><a href="#principe-de-programmation">Principe de programmation</a></li>
+<li><a href="#règles-de-programmation">Règles de programmation</a></li>
+<li><a href="#exemple">Exemple</a></li>
+<li><a href="#notion-de-contrat">Notion de contrat</a></li>
+<li><a href="#quand-le-contrat-est-rompu">Quand le contrat est rompu</a>
+<ul class="sectlevel3">
+<li><a href="#comment-ça-marche">Comment ça marche ?</a></li>
+</ul>
+</li>
+<li><a href="#les-raisons-dun-échec">Les raisons d&#8217;un échec</a>
+<ul class="sectlevel3">
+<li><a href="#rupture-du-contrat-par-le-client">Rupture du contrat par le client</a></li>
+<li><a href="#rupture-du-contrat-par-le-fournisseur">Rupture du contrat par le fournisseur</a></li>
+</ul>
+</li>
+<li><a href="#comment-gérer-les-exceptions">Comment gérer les exceptions ?</a>
+<ul class="sectlevel3">
+<li><a href="#propager-lexception">PROPAGER L&#8217;EXCEPTION</a></li>
+<li><a href="#traiter-silencieusement-le-problème">TRAITER SILENCIEUSEMENT LE PROBLÈME</a></li>
+<li><a href="#traiter-le-probleme-et-declencher-une-exception">TRAITER LE PROBLEME ET DECLENCHER UNE EXCEPTION</a></li>
+</ul>
+</li>
+<li><a href="#exemple-2">Exemple</a></li>
+<li><a href="#références">Références</a></li>
 </ul>
 </li>
 </ul>
@@ -42,26 +64,118 @@
 <p><span class="image"><img src="images/cogitas.png" alt="cogitas" width="200" title="cogitas"></span></p>
 </div>
 <div class="paragraph">
-<p>Texte introductif</p>
+<p>Le mécanisme des exceptions fait écho au concept de <em>design by contrat</em> de Bertrand Meyer.</p>
+</div>
+<div class="paragraph">
+<p><em>La programmation par contrat (en anglais, design by contract ou DBC) est un paradigme de programmation dans lequel le déroulement des traitements est régi par des règles. Ces règles, appelées des assertions, forment un contrat qui précise les responsabilités entre le client et le fournisseur d&#8217;un morceau de code logiciel. C&#8217;est une méthode de programmation semi-formelle dont le but principal est de réduire le nombre de bugs dans les programmes.</em> (<a href="https://fr.wikipedia.org/wiki/Programmation_par_contrat" class="bare">https://fr.wikipedia.org/wiki/Programmation_par_contrat</a>)</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="titre-doc-1"><a class="anchor" href="#titre-doc-1"></a>Titre doc 1</h2>
+<h2 id="introdution"><a class="anchor" href="#introdution"></a>Introdution</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h3>
-<div class="admonitionblock tip">
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Une <strong>exception</strong> est un événement déclenché par une erreur survenant à l&#8217;exécution.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Une exception est la manifestation d&#8217;un bogue, le signe qu&#8217;une opération s&#8217;est interrompue anormalement.</p>
+</div>
+<div class="sect3">
+<h4 id="principe-de-programmation"><a class="anchor" href="#principe-de-programmation"></a>Principe de programmation</h4>
+<div class="admonitionblock important">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
+<i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Exemple d&#8217;après Jacquelin Charbonnel — CNRS LAREMA (octobre 2019)
+<div class="paragraph">
+<p><strong>Pas de retour pour les bogues</strong></p>
+</div>
+<div class="paragraph">
+<p>Une opération qui ne peut pas réaliser sa fonction ne doit pas retourner à l&#8217;appelant.</p>
+</div>
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Ce principe est à rapprocher que le qualité première d&#8217;une fonction : <strong><a href="https://ocapuozzo.github.io/qualite-logiciel/#correction">la correction</a></strong>. Une fonction (au sens large) ne pouvant pas réaliser le travail pour laquelle elle s&#8217;est engagée, doit déclarer forfait.</p>
+</div>
+<div class="paragraph">
+<p>Les langages d&#8217;aujourd&#8217;hui fournissent un moyen d&#8217;adhérer à ce princpe, en fournissant <strong>un canal de retour dédié aux exceptions</strong>. L&#8217;erreur est alors canalisée, puis traitée avec plus ou moins de bonheur.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="règles-de-programmation"><a class="anchor" href="#règles-de-programmation"></a>Règles de programmation</h4>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>R1</strong> : Une fonction (appelée - le fournisseur -) qui ne peut réaliser son contrat ne doit pas retourner à l&#8217;appelant, mais utiliser pour cela le canal des exceptions offerts par les langages de programmation.</p>
+</li>
+<li>
+<p><strong>R2</strong> : La fonction appelante (le client) ne doit pas appeler une fonction si elle n&#8217;en remplit pas les conditions d&#8217;utilisation (pré-conditions).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="exemple"><a class="anchor" href="#exemple"></a>Exemple</h4>
+<div class="paragraph">
+<p>Nous souhaitons, dans un formulaire en cours d&#8217;exécution, pouvoir changer l&#8217;image du produit courant. Pour cela nous créons une méthode qui reçoit le nom d&#8217;une image (un nom de fichier) et qui place celle-ci dans un label.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Formulaire</span> <span class="directive">extends</span> <span class="predefined-type">JFrame</span> {
+<span class="directive">private</span>
+<span class="predefined-type">JLabel</span> lbnomProduit;
+
+  <span class="directive">public</span> <span class="type">void</span> changeImage(<span class="predefined-type">String</span> nomFicImage){
+    <span class="predefined-type">ImageIcon</span> icon = <span class="predefined-constant">null</span>;
+    java.net.URL iconURL = <span class="predefined-type">ClassLoader</span>.getSystemResource(nomFicImage);
+    icon = <span class="keyword">new</span> <span class="predefined-type">ImageIcon</span>(iconURL);
+    lbnomProduit.setIcon(icon);
+  }
+  . . .
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Isolons une instruction :</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/appelant-le.png" alt="appelant le">
+</div>
+</div>
+<div class="paragraph">
+<p>Notre méthode <code>changeImage</code> a un objectif bien précis : placer une image dans un label. Pour réaliser cette tâche, elle délègue à un objet de la classe <code>ImageIcon</code> le soin de charger l&#8217;image en mémoire.</p>
+</div>
+<div class="paragraph">
+<p>A cet instant précis, la méthode <code>changeImage</code> agit en tant que client (l'<strong>appelant</strong>) et l&#8217;objet de type <code>ImageIcon</code> en tant que fournisseur de service (l'<strong>appelé</strong>). Situation rien de plus banale.</p>
+</div>
+<div class="paragraph">
+<p>Comme dans toute relation client-fournisseur, il existe un contrat entre les parties. Dans une telle relation, chacune des parties assume ses obligations et peut faire valoir ses droits.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="notion-de-contrat"><a class="anchor" href="#notion-de-contrat"></a>Notion de contrat</h3>
+<div class="paragraph">
+<p>Revenons sur l&#8217;analogie client-fournisseur. Un contrat lie client et fournisseur.</p>
+</div>
+<div class="paragraph">
+<p>Exemples de contrat : <em>Si vous commandez ce produit avant 18h, nous vous garantissons une livraison chez vous le lendemain</em></p>
+</div>
+<div class="paragraph">
+<p>Bien sur, les contrats peuvent être bien plus complexes : contrat de travail, contrat de mariage, contrat de construction d&#8217;une maison etc.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -71,41 +185,37 @@ Exemple d&#8217;après Jacquelin Charbonnel — CNRS LAREMA (octobre 2019)
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Ici, c&#8217;est un apparté (sidebar, dont le rendu peut varier, c&#8217;est responsive).
-On y met ce que l&#8217;on veut, par exemple une liste :</p>
+<div class="title">Définition d&#8217;un contrat</div>
+<p>Le principe de conception par contrat est dérivé de la notion légale de contrat : <strong>chacune des parties qui respecte ses obligations est en droit de faire valoir ses droits</strong>.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>level1</p>
-<div class="ulist">
-<ul>
-<li>
-<p>level2</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>En terme de programmation, un objet est responsable de l&#8217;exécution des services dont il a la charge (ses obligations) si et seulement si certaines conditions sont remplies (ses droits).</p>
 </div>
-</li>
-<li>
-<p>level1</p>
-</li>
-</ul>
-</div>
-<div class="sidebarblock">
-<div class="content">
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-Ici, c&#8217;est un apparté dans l&#8217;apparté, avec ci-dessous un tableau :
 </td>
 </tr>
 </table>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<div class="paragraph">
+<p>Les obligations et droits sont représentés en UML par des pré et post conditions.</p>
+</div>
+<div class="paragraph">
+<p>Les définitions suivantes, sont extraites du livre "Conception et programation orientées objet" de Bertrand Meyer (p. 335).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>La <strong>précondition</strong> s&#8217;impose au client. Elle défine les conditions selon lesquelles un appel de méthode est légitime. C&#8217;est une obligation pour le client et un droit pour le fournisseur.</p>
+</li>
+<li>
+<p>La <strong>postcondition</strong> définit les conditions qui doivent être vérifiées par la méthode au retour de son appel. C&#8217;est un droit pour le client et une obligation pour le fournisseur.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Contrairement à ce qui se pratique parfois, <strong>le fournisseur définit seul les termes du contrat, pas de négociation possible</strong> !</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Exemple de contrat relatif au constructeur ImageIcon de notre exemple.</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -113,38 +223,333 @@ Ici, c&#8217;est un apparté dans l&#8217;apparté, avec ci-dessous un tableau :
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">col1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">col2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">col3</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Obligations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Droits</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">B</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Client</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(pré-condition)</p>
+<p class="tableblock">Fournir un chemin valide correspondant à un fichier image correcte</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">obtenir une référence valide à un objet ImageIcon</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fournisseur</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(post-condition)</p>
+<p class="tableblock">Retourner une référence à une instance de <code>ImageIcon</code> valide en mémoire</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Obtenir un chemin exploitable vers un fichier image.</p></td>
 </tr>
 </tbody>
 </table>
-<div class="sidebarblock">
-<div class="content">
-<div class="admonitionblock important">
+</div>
+<div class="sect2">
+<h3 id="quand-le-contrat-est-rompu"><a class="anchor" href="#quand-le-contrat-est-rompu"></a>Quand le contrat est rompu</h3>
+<div class="paragraph">
+<p>Un contrat rompu est synonyme de bogue : l&#8217;une des deux parties n&#8217;a pas été en mesure de respecter son contrat.</p>
+</div>
+<div class="paragraph">
+<p>Dans le but de répondre à cette problématique, certains langages de programmation proposent un mécanisme de gestion des contrats.</p>
+</div>
+<div class="paragraph">
+<p>Toute fois, il arrive que les spécifications des contrats (pré et post conditions) ne soient présentes que sous la forme de commentaires dans la documentation (documentation de l&#8217;API).</p>
+</div>
+<div class="paragraph">
+<p>Les langages modernes proposent au minimum un mécanisme appelé <em>gestion des exceptions</em>.</p>
+</div>
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Et on peut continueeeeer ! Taïôôôôôôôôôô
+<div class="paragraph">
+<div class="title">Définition  : <strong>Exception</strong></div>
+<p>Dénote l&#8217;impossibilité pour une opération de réaliser son contrat</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="comment-ça-marche"><a class="anchor" href="#comment-ça-marche"></a>Comment ça marche ?</h4>
+<div class="paragraph">
+<p>Lorsqu&#8217;une exception est déclenchée, un <strong>saut brutal arrière</strong> est effectué vers <strong>le premier gestionnaire <code>try/catch</code> intéressé par l&#8217;exception</strong>, en remontant la chaîne des appels.</p>
+</div>
+<div class="paragraph">
+<p>Ainsi si aucun gestionnaire <code>try/catch</code> ne filtre l&#8217;exception en train de remonter, elle atteindra la fonction d&#8217;entrée du programme (le <em>main</em>) arrêtant du même coup celui-ci, dans le cas d&#8217;une application web, retourne un code erreur 500&#8230;&#8203;</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/erreur-500.png" alt="erreur 500">
+</div>
+</div>
+<div class="paragraph">
+<p>Situation qu&#8217;il est préférable d&#8217;éviter !</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="les-raisons-dun-échec"><a class="anchor" href="#les-raisons-dun-échec"></a>Les raisons d&#8217;un échec</h3>
+<div class="sect3">
+<h4 id="rupture-du-contrat-par-le-client"><a class="anchor" href="#rupture-du-contrat-par-le-client"></a>Rupture du contrat par le client</h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+NON RESPECT DU CONTRAT D&#8217;UTILISATION D&#8217;UNE API
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Le code client tente quelque chose non autorisée par l&#8217;API, et viole ainsi son contrat.</p>
+</div>
+<div class="paragraph">
+<p>La violation la plus courante consiste à passer des valeurs <code>null</code> comme argument à des méthodes qui attendent des références à des objets en mémoire !  Le client reçoit le plus souvent une exception de type <code>NullPointerException</code>, bien connu des développeurs java.</p>
+</div>
+<div class="paragraph">
+<p>C&#8217;est une situation que le client devrait éviter !!</p>
+</div>
+<div class="paragraph">
+<p>Il existe cependant des situations où il est très difficile de vérifier des prérequis.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<div class="title">Cas d&#8217;un déclenchement à l&#8217;aveugle</div>
+<p>C&#8217;est un cas très particulier, qui consiste à lancer un traitement en utilisant des données hors de contrôle. La présence même d&#8217;une exception dans le traitement du fournisseur informe le programme client de la nature des données transmises. Il peut également adopter une solution de rechange, s&#8217;il obtient des informations utiles fournies dans l&#8217;exception.</p>
+</div>
+<div class="paragraph">
+<p>Par exemple : Une exception est levée lors de l&#8217;analyse d&#8217;un document XML. On apprend alors que ce document n&#8217;est pas valide. L&#8217;exception contient des informations utiles sur l&#8217;emplacement dans le document XML qui provoque le problème. Le client peut alors utiliser cette information pour prendre des mesures de récupération.</p>
+</div>
+<div class="paragraph">
+<p>En général, un algorithme ne devrait pas s&#8217;appuyer sur la survenue ou non d&#8217;une exception, ce cas doit être exceptionnel, car une exception est coûteuse (mémoire,
+traitement) et si elle peut être éviter à moindre frais autant le faire !</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rupture-du-contrat-par-le-fournisseur"><a class="anchor" href="#rupture-du-contrat-par-le-fournisseur"></a>Rupture du contrat par le fournisseur</h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+ECHEC DU SERVICE APPELÉ
+</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="raison-1-bug-dû-à-une-erreur-de-programmation"><a class="anchor" href="#raison-1-bug-dû-à-une-erreur-de-programmation"></a>Raison 1 : BUG dû à une erreur de programmation</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Si c&#8217;est votre code&#8230;&#8203; vous devez le corriger !</p>
+</li>
+<li>
+<p>Si c&#8217;est dû à un problème d&#8217;implémentation d&#8217;une API tierce (bug dans une fonction
+d&#8217;une bibliothèque), situation rare, il n&#8217;y a souvent pas grand chose à faire, si ce
+n&#8217;est de déclarer ce bug à la communauté et, en attendant sa correction, de
+chercher à le contourner (à moins que vous proposiez un correctif – cas des
+solutions open source).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="raison-2-echec-dans-lobtention-de-ressources-nécessaires-au-service"><a class="anchor" href="#raison-2-echec-dans-lobtention-de-ressources-nécessaires-au-service"></a>Raison 2 : ECHEC dans l&#8217;obtention de ressources nécessaires au service</h5>
+<div class="paragraph">
+<p>L&#8217;application ne peut plus faire son travail et doit donc se terminer proprement
+(libérer les ressources utilisées, fermer les connexions, etc.) et informer l&#8217;appelant
+de la cause du problème (fichier introuvable, réseau inaccessible…) mais pas
+toujours (question de sécurité : l&#8217;appelant peut parfois être mal intentionné&#8230;&#8203;)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="comment-gérer-les-exceptions"><a class="anchor" href="#comment-gérer-les-exceptions"></a>Comment gérer les exceptions ?</h3>
+<div class="paragraph">
+<p>Face à l&#8217;éventualité d&#8217;un déclenchement d&#8217;exception, le développeur a le choix de traiter le problème ou non ! 3 possibilités en fait :</p>
+</div>
+<div class="sect3">
+<h4 id="propager-lexception"><a class="anchor" href="#propager-lexception"></a>PROPAGER L&#8217;EXCEPTION</h4>
+<div class="paragraph">
+<p>Ne pas traiter le problème en renvoyant la responsabilité à l&#8217;appelant. Cette technique
+consiste à propager l&#8217;exception en utilisant le mot clé <code>throws</code></p>
+</div>
+<div class="paragraph">
+<p>Propager l&#8217;exception c&#8217;est <strong>renvoyer à l&#8217;appelant la gestion du problème</strong>, en l&#8217;avertissant
+qu&#8217;une exception est susceptible de survenir (via une déclaration <code>throws</code> dans l&#8217;interface en java, ou <code>throw new Exception</code> dans le corps de la méthode).</p>
+</div>
+<div class="paragraph">
+<p>Exemple de déclaration de cette logique:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// prévenir que cette fonction est susceptible de générer une exception (SqlException)</span>
+<span class="directive">public</span> <span class="type">void</span> insertIntoTable(<span class="predefined-type">Connection</span> con, <span class="predefined-type">String</span> table) <span class="directive">throws</span> SqlException</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="traiter-silencieusement-le-problème"><a class="anchor" href="#traiter-silencieusement-le-problème"></a>TRAITER SILENCIEUSEMENT LE PROBLÈME</h4>
+<div class="paragraph">
+<p>Traiter le problème localement, sans en avertir l&#8217;appelant.</p>
+</div>
+<div class="paragraph">
+<p>Traiter l&#8217;exception c&#8217;est l&#8217;intercepter dans le corps de la fonction et changer de stratégie. Cela s&#8217;opère avec les mots clés <strong>try</strong>, <strong>catch</strong>, <strong>finally</strong>. La clause <strong>catch</strong> permet de filtrer les classes d&#8217;exception. Attention, le filtrage des classes se réalise séquentiellement, dans l&#8217;ordre des déclarations des blocs catch. Donc le filtrage doit partir des classes filles vers la classe mère. En effet, le catch s&#8217;arrête dès que la classe de l&#8217;exception est compatible une classe déclarer dans la séquence de catch. Attention, une clause <strong>try</strong> doit au moins être associée à une clause <strong>catch</strong>. La clause <strong>finally</strong> est optionnelle, son bloc est "assuré" d&#8217;être exécuté, qu&#8217;il y ait eu une exception ou non.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/code-java-try-cat-ch-finally.png" alt="code java try cat ch finally">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="traiter-le-probleme-et-declencher-une-exception"><a class="anchor" href="#traiter-le-probleme-et-declencher-une-exception"></a>TRAITER LE PROBLEME ET DECLENCHER UNE EXCEPTION</h4>
+<div class="paragraph">
+<p>Traiter en partie le problème localement et propager une exception métier (à l&#8217;appelant
+donc). Exemple :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">void</span> changerPhotoTrombino(<span class="predefined-type">String</span> nomImage)
+          <span class="directive">throws</span> ChangementPhotoImpossibleException {
+  <span class="keyword">try</span> {
+    <span class="comment">// tentative de chargement et remplacement de l'image</span>
+  }<span class="keyword">catch</span> (<span class="exception">FileNotFoundException</span> e){
+    <span class="comment">// marquer la photo actuelle comme obsolète, puis</span>
+    <span class="keyword">throw</span> <span class="keyword">new</span> ChangementPhotoImpossibleException(e.getMessage());
+  }<span class="keyword">finally</span> {
+    <span class="comment">// fin de l'opération, inscription dans un fichier de log</span>
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La classe <code>ChangementPhotoImpossibleException</code> est une sous-classe de Exception
+que vous devez concevoir, l&#8217;appelant ayant la charge de la gestion de ses instances
+éventuelles.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>L&#8217;instruction <code>throw new &lt;classe d&#8217;exception&gt;</code> est un <strong>déclencheur</strong> d&#8217;exception (technique ou métier).</p>
+</div>
+<div class="paragraph">
+<p>Le bloc <code>finally</code> sera tout de même exécuté.</p>
+</div>
+<div class="paragraph">
+<p>C&#8217;est le comportement général des gestionnaires d&#8217;exception des langages de programmation.</p>
+</div>
 </td>
 </tr>
 </table>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="exemple-2"><a class="anchor" href="#exemple-2"></a>Exemple</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td>
+  <td class="code"><pre><span class="keyword">function</span> <span class="function">f</span>() {
+ <span class="keyword">try</span> {
+   console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">instuction 1</span><span class="delimiter">&quot;</span></span>)
+   console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">instuction 2</span><span class="delimiter">&quot;</span></span>)
+   <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string"><span class="delimiter">&quot;</span><span class="content">exception 1</span><span class="delimiter">&quot;</span></span>)
+   console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">instuction 3</span><span class="delimiter">&quot;</span></span>)
+ }
+ <span class="keyword">catch</span>(e) {
+   console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">e attrapée : </span><span class="delimiter">&quot;</span></span> + e)
+   <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string"><span class="delimiter">&quot;</span><span class="content">exception 2</span><span class="delimiter">&quot;</span></span>)
+ }
+ <span class="keyword">finally</span> {
+   console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">dans le finally</span><span class="delimiter">&quot;</span></span>)
+ }
+}</pre></td>
+</tr></table></code></pre>
 </div>
 </div>
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Au lancement de la fonction, nous obtenons :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+</pre></td>
+  <td class="code"><pre>[LOG]: <span class="string"><span class="delimiter">&quot;</span><span class="content">instuction 1</span><span class="delimiter">&quot;</span></span>
+[LOG]: <span class="string"><span class="delimiter">&quot;</span><span class="content">instuction 2</span><span class="delimiter">&quot;</span></span>
+[LOG]: <span class="string"><span class="delimiter">&quot;</span><span class="content">e attrapée : Error: exception 1</span><span class="delimiter">&quot;</span></span>
+[LOG]: <span class="string"><span class="delimiter">&quot;</span><span class="content">dans le finally</span><span class="delimiter">&quot;</span></span>
+[ERR]: <span class="string"><span class="delimiter">&quot;</span><span class="content">Executed JavaScript Failed:</span><span class="delimiter">&quot;</span></span>
+[ERR]: exception <span class="integer">2</span>
+</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/try-catch-js.png" alt="try catch js">
+</div>
+</div>
+<div class="paragraph">
+<p>N&#8217;ayant pas déclaré de gestionnaire <code>try&#8230;&#8203;catch</code> pour gérer l&#8217;exception 2, le programme s&#8217;arrête brutalement, <strong>après avoir traité le bloc finally du premier gestionnaire</strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="références"><a class="anchor" href="#références"></a>Références</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://fr.wikipedia.org/wiki/Programmation_par_contrat" class="bare">https://fr.wikipedia.org/wiki/Programmation_par_contrat</a> (design by contrat)</p>
+</li>
+<li>
+<p><a href="http://onjava.com/pub/a/onjava/2003/11/19/exceptions.html" class="bare">http://onjava.com/pub/a/onjava/2003/11/19/exceptions.html</a></p>
+</li>
+<li>
+<p>"Does Java need Checked Exceptions?" by Bruce Eckel</p>
+</li>
+<li>
+<p>"Conception et programmation orientées objet" de Bertrand Meyer (ed. Eyrolles).</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -153,8 +558,9 @@ Et on peut continueeeeer ! Taïôôôôôôôôôô
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2020-04-13 11:14:47 CEST
+Last updated 2021-12-08 09:35:44 +0100
 </div>
 </div>
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
 </body>
 </html>

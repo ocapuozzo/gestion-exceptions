@@ -31,3 +31,29 @@ IMPORTANT: Et on peut continueeeeer ! Taïôôôôôôôôôô
 ****
 --
 
+[source,groovy,indent=0,subs="verbatim,attributes",role="primary"]
+.Groovy
+----
+docker {
+    registryCredentials {
+        url = 'https://gcr.io'
+        username = '_json_key'
+        password = file('keyfile.json').text
+    }
+}
+----
+
+[source,kotlin,indent=0,subs="verbatim,attributes",role="secondary"]
+.Kotlin
+----
+docker {
+    registryCredentials {
+        url.set("https://gcr.io")
+        username.set("_json_key")
+        password.set(file("keyfile.json").readText())
+    }
+}
+----
+
+
+
