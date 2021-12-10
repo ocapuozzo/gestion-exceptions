@@ -90,17 +90,17 @@ Contrairement à ce qui se pratique parfois, *le fournisseur définit seul les t
 
 .Exemple de contrat relatif au constructeur ImageIcon de notre exemple.
 |===
-| | Obligations | Droits
-|Client
+| | *Obligations* | *Droits*
+|*Client*
 |(pré-condition)
 
-Fournir un chemin valide correspondant à un fichier image correcte
-|obtenir une référence valide à un objet ImageIcon
-|Fournisseur
+Doit fournir un chemin valide correspondant à un fichier image correct
+|S'attend à obtenir une référence valide à un objet ImageIcon
+|*Fournisseur*
 |(post-condition)
 
-Retourner une référence à une instance de `ImageIcon` valide en mémoire
-|Obtenir un chemin exploitable vers un fichier image.
+S'engage à retourner une référence à une instance de `ImageIcon` valide en mémoire
+|S'attend à recevoir un chemin exploitable vers un fichier image.
 
 |===
 
@@ -117,8 +117,8 @@ Les langages modernes proposent au minimum un mécanisme appelé _gestion des ex
 
 [TIP]
 ====
-.Définition  : *Exception*
-Dénote l'impossibilité pour une opération de réaliser son contrat
+.*Exception*
+Événement déclenché par une opération qui s'est trouvée dans l'impossibilité de réaliser son contrat.
 ====
 
 === Comment ça marche ?
