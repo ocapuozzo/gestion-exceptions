@@ -237,7 +237,7 @@ Le bloc `finally` sera tout de même exécuté.
 C'est le comportement général des gestionnaires d'exception des langages de programmation.
 ====
 
-== Exemple
+== Exemples
 
 [source, javascript, num]
 --
@@ -275,6 +275,9 @@ image::try-catch-js.png[]
 
 N'ayant pas déclaré de gestionnaire `try...catch` pour gérer l'exception 2, le programme s'arrête brutalement, *après avoir traité le bloc finally du premier gestionnaire*.
 
+== Contre exemples (mauvaise pratique)
+
+TODO
 
 == Références
 
