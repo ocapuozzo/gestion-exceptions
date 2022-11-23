@@ -277,7 +277,14 @@ N'ayant pas déclaré de gestionnaire `try...catch` pour gérer l'exception 2, l
 
 == Contre exemples (mauvaise pratique)
 
-TODO
+. Utiliser un gestionnaire d'exception (`try ... catch`) alors qu'il est possible de poser une condition peu couteuse !
++
+.Exemple
+[source, kotlin]
+----
+// TODO exemple
+----
+
 
 == Références
 

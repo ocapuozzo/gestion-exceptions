@@ -11,7 +11,9 @@
     <orderEntry type="library" name="Maven: org.asciidoctor:asciidoctorj:2.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.asciidoctor:asciidoctorj-api:2.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.jruby:jruby:9.2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: com.beust:jcommander:1.35" level="project" />
     <orderEntry type="library" name="Maven: org.jruby:jruby-core:9.2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jruby:jruby-stdlib:9.2.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jnr-netdb:1.1.6" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jnr-enxio:0.19" level="project" />
     <orderEntry type="library" name="Maven: com.github.jnr:jnr-unixsocket:0.20" level="project" />
@@ -28,7 +30,5 @@
     <orderEntry type="library" name="Maven: com.martiansoftware:nailgun-server:0.9.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.9.9" level="project" />
     <orderEntry type="library" name="Maven: com.headius:backport9:1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.jruby:jruby-stdlib:9.2.7.0" level="project" />
-    <orderEntry type="library" name="Maven: com.beust:jcommander:1.35" level="project" />
   </component>
 </module>
