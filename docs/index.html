@@ -476,8 +476,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_traiter_le_probleme_et_declencher_une_exception">TRAITER LE PROBLEME ET DECLENCHER UNE EXCEPTION</a></li>
 </ul>
 </li>
-<li><a href="#_exemples">Exemples</a></li>
-<li><a href="#_contre_exemples_mauvaise_pratique">Contre exemples (mauvaise pratique)</a></li>
+<li><a href="#_exemples">Exemples</a>
+<ul class="sectlevel3">
+<li><a href="#_kotlin">Kotlin</a></li>
+<li><a href="#_js">JS</a></li>
+</ul>
+</li>
+<li><a href="#_contre_exemple_mauvaise_pratique">Contre exemple (mauvaise pratique)</a></li>
 <li><a href="#_références">Références</a></li>
 </ul>
 </li>
@@ -892,6 +897,68 @@ que vous devez concevoir, l&#8217;appelant ayant la charge de la gestion de ses 
 </div>
 <div class="sect2">
 <h3 id="_exemples">Exemples</h3>
+<div class="sect3">
+<h4 id="_kotlin">Kotlin</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="kotlin">// class Controller
+
+    // réponse directe au client (sans vue)
+    @GetMapping(&quot;/demo-ge&quot;)
+    fun demoException(response: HttpServletResponse) {
+        response.contentType = &quot;text/plain&quot;
+        response.characterEncoding = &quot;UTF-8&quot;
+        val tab1 = intArrayOf(2, 3, 0, 1, 7)
+        val tab2 = intArrayOf(2, 2, 2, 2, 2)
+        val tab3 = intArrayOf() // vide
+        val tab4 = intArrayOf(2, -3, 4, 1, 7)
+        val tabOfTab = arrayListOf&lt;IntArray&gt;(tab1, tab2, tab3, tab4)
+        val writer: PrintWriter = response.getWriter()
+        writer.println(&quot;Test de la fonction min&quot;)
+        for (tab  in  tabOfTab){
+            try {
+                writer.println(&quot;le minmum de tab = &quot; + min(tab))
+            } catch (e: IllegalArgumentException) {
+                writer.println(&quot;ERREUR : &quot; + e.message)
+            }
+        }
+        writer.println(&quot;Fin du test.&quot;);
+    }
+
+// Fonction utilitaire (sans classe)
+
+/**
+ * Obtenir la valeur minimum d'une liste
+ *
+ * @param list d'entiers
+ * @return la valeur minimale de la liste
+ * @throws IllegalArgumentException si liste est vide
+ */
+@Throws(IllegalArgumentException::class)
+fun min(list: IntArray): Int {
+    if (list.isEmpty()) {
+        throw IllegalArgumentException(&quot;min sur liste vide IMPOSSIBLE&quot;)
+    }
+    var minNb: Int = list[0]
+
+    for (i in list.indices) {
+        if (minNb &gt; list[i]) minNb = list[i]
+    }
+    return minNb
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Exemple de résultat :</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/demo-ge-run.png" alt="demo ge run">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_js">JS</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><table class="CodeRay"><tr>
@@ -952,6 +1019,9 @@ que vous devez concevoir, l&#8217;appelant ayant la charge de la gestion de ses 
 </tr></table></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Exemple de résultat :</p>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="images/try-catch-js.png" alt="try catch js">
@@ -961,8 +1031,9 @@ que vous devez concevoir, l&#8217;appelant ayant la charge de la gestion de ses 
 <p>N&#8217;ayant pas déclaré de gestionnaire <code>try&#8230;&#8203;catch</code> pour gérer l&#8217;exception 2, le programme s&#8217;arrête brutalement, <strong>après avoir traité le bloc finally du premier gestionnaire</strong>.</p>
 </div>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_contre_exemples_mauvaise_pratique">Contre exemples (mauvaise pratique)</h3>
+<h3 id="_contre_exemple_mauvaise_pratique">Contre exemple (mauvaise pratique)</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -970,11 +1041,33 @@ que vous devez concevoir, l&#8217;appelant ayant la charge de la gestion de ses 
 <div class="listingblock">
 <div class="title">Listing 1. Exemple</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="kotlin">// TODO exemple</code></pre>
+<pre class="CodeRay highlight"><code data-lang="kotlin">/**
+ * Obtenir la valeur minimum d'une liste
+ *
+ * @param list d'entiers
+ * @return la valeur minimale
+ * @throws IllegalArgumentException si liste est vide
+ */
+@Throws(IllegalArgumentException::class)
+fun min(list: IntArray): Int {
+    try {
+        var minNb: Int = list[0]
+
+        for (i in list.indices) {
+            if (minNb &gt; list[i]) minNb = list[i]
+        }
+        return minNb
+    } catch (e: ArrayIndexOutOfBoundsException) {
+        throw IllegalArgumentException(&quot;min sur liste vide IMPOSSIBLE&quot;)
+    }
+}</code></pre>
 </div>
 </div>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p>À comparer avec la version précédente. Le résultat est le même, mais pas le coût en ressources (le coût de <code>try&#8230;&#8203;catch</code> n&#8217;est pas null ! )</p>
 </div>
 </div>
 <div class="sect2">
