@@ -239,6 +239,64 @@ C'est le comportement général des gestionnaires d'exception des langages de pr
 
 == Exemples
 
+=== Kotlin
+
+[source, kotlin]
+----
+// class Controller
+
+    // réponse directe au client (sans vue)
+    @GetMapping("/demo-ge")
+    fun demoException(response: HttpServletResponse) {
+        response.contentType = "text/plain"
+        response.characterEncoding = "UTF-8"
+        val tab1 = intArrayOf(2, 3, 0, 1, 7)
+        val tab2 = intArrayOf(2, 2, 2, 2, 2)
+        val tab3 = intArrayOf() // vide
+        val tab4 = intArrayOf(2, -3, 4, 1, 7)
+        val tabOfTab = arrayListOf<IntArray>(tab1, tab2, tab3, tab4)
+        val writer: PrintWriter = response.getWriter()
+        writer.println("Test de la fonction min")
+        for (tab  in  tabOfTab){
+            try {
+                writer.println("le minmum de tab = " + min(tab))
+            } catch (e: IllegalArgumentException) {
+                writer.println("ERREUR : " + e.message)
+            }
+        }
+        writer.println("Fin du test.");
+    }
+
+// Fonction utilitaire (sans classe)
+
+/**
+ * Obtenir la valeur minimum d'une liste
+ *
+ * @param list d'entiers
+ * @return la valeur minimale de la liste
+ * @throws IllegalArgumentException si liste est vide
+ */
+@Throws(IllegalArgumentException::class)
+fun min(list: IntArray): Int {
+    if (list.isEmpty()) {
+        throw IllegalArgumentException("min sur liste vide IMPOSSIBLE")
+    }
+    var minNb: Int = list[0]
+
+    for (i in list.indices) {
+        if (minNb > list[i]) minNb = list[i]
+    }
+    return minNb
+}
+
+----
+
+Exemple de résultat :
+
+image::demo-ge-run.png[]
+
+=== JS
+
 [source, javascript, num]
 --
 function f() {
@@ -271,20 +329,43 @@ Au lancement de la fonction, nous obtenons :
 
 --
 
+Exemple de résultat :
+
 image::try-catch-js.png[]
 
 N'ayant pas déclaré de gestionnaire `try...catch` pour gérer l'exception 2, le programme s'arrête brutalement, *après avoir traité le bloc finally du premier gestionnaire*.
 
-== Contre exemples (mauvaise pratique)
+== Contre exemple (mauvaise pratique)
 
 . Utiliser un gestionnaire d'exception (`try ... catch`) alors qu'il est possible de poser une condition peu couteuse !
 +
 .Exemple
 [source, kotlin]
 ----
-// TODO exemple
+/**
+ * Obtenir la valeur minimum d'une liste
+ *
+ * @param list d'entiers
+ * @return la valeur minimale
+ * @throws IllegalArgumentException si liste est vide
+ */
+@Throws(IllegalArgumentException::class)
+fun min(list: IntArray): Int {
+    try {
+        var minNb: Int = list[0]
+
+        for (i in list.indices) {
+            if (minNb > list[i]) minNb = list[i]
+        }
+        return minNb
+    } catch (e: ArrayIndexOutOfBoundsException) {
+        throw IllegalArgumentException("min sur liste vide IMPOSSIBLE")
+    }
+}
+
 ----
 
+À comparer avec la version précédente. Le résultat est le même, mais pas le coût en ressources (le coût de `try...catch` n'est pas null ! )
 
 == Références
 
