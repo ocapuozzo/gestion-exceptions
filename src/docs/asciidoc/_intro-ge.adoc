@@ -295,6 +295,43 @@ Exemple de résultat :
 
 image::demo-ge-run.png[]
 
+
+=== Tests unitaires
+
+[source, kotlin]
+----
+package fr.vincimelun.sbfirst
+
+import fr.vincimelun.sbfirst.controller.min
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+import java.lang.IllegalArgumentException
+
+class UnitTests constructor() {
+
+    @Test
+    fun `minimum tab normal`() {
+        val tab1 = intArrayOf(2, 3, 0, 1, 7)
+        val tab2 = intArrayOf(2, 2, 2, 2, 2)
+        val min: Int = min(tab2)
+        assertEquals(0, min(tab1))
+        assertEquals(2, min)
+    }
+
+    @Test
+    fun `minimum tab vide`() {
+        val tabVide = intArrayOf()
+        try {
+            val min: Int = min(tabVide)
+            fail("Ne devrait pas passer par là")
+        }catch (e: IllegalArgumentException) {
+            assertTrue(1==1) // Tautologie pour le fun :)
+        }
+
+    }
+}
+----
+
 === JS
 
 [source, javascript, num]
