@@ -211,7 +211,7 @@ Le filtre se base sur la hiérarchie des classes, du plus spécialisé jusqu'à 
 
 image:heritage-exceptions.png[]
 
-En Java, les sous classes de type `RuntimeException` sont les plus courantes, le développeur est tenu de les éviter sans pour autant avoir recours à un gestionnaire d'exceptions.
+En Java, les sous classes de type `RuntimeException` sont les plus courantes, le développeur est tenu de les éviter sans pour autant, systématiquement avoir recours à un gestionnaire d'exceptions.
 
 //
 // [plantuml]
