@@ -204,6 +204,34 @@ Traiter l'exception c'est l'intercepter dans le corps de la fonction et changer 
 
 image::code-java-try-cat-ch-finally.png[]
 
+Le filtre se base sur la hiérarchie des classes, du plus spécialisé jusqu'à une classe de base (le plus souvent la classe `Exception`)
+
+==== Extrait d'une hiérarchie de classes d'exception
+
+
+image:heritage-exceptions.png[]
+
+En Java, les sous classes de type `RuntimeException` sont les plus courantes, le développeur est tenu de les éviter sans pour autant avoir recours à un gestionnaire d'exceptions.
+
+//
+// [plantuml]
+// ----
+// @startuml
+//
+// Throwable <|-- Error
+// Throwable <|-- Exception
+// Exception <|-- RuntimeException
+// RuntimeException <|-- ArithmeticException
+// RuntimeException <|-- IndexOutBoundsException
+// RuntimeException <|-- NumberFormatException
+// IndexOutBoundsException <|-- StringOutBoundsException
+// hide circle
+// @enduml
+//
+//
+// ----
+
+
 === TRAITER LE PROBLEME ET DECLENCHER UNE EXCEPTION
 
 Traiter en partie le problème localement et propager une exception métier (à l'appelant
